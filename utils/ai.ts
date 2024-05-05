@@ -41,7 +41,7 @@ export const analyze = async (content : any)=>{
   const model = new ChatGoogleGenerativeAI({
     model: "gemini-pro",
     maxOutputTokens: 2048,
-    temperature:0,
+    temperature:0.7,
   });
   const result = await model.invoke(input)
   
