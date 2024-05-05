@@ -7,14 +7,14 @@ function DashBoardLayout({ children }) {
     {href:'/journal',label:"Journal"},
 
   ]
-  return <div className="h-screen w-screen relative">
-    <aside className="absolute w-[200px] top-0 left-0 h-full border-r border-black/10">
-      <div>
-        Mood
+  return <div className=" w-full relative">
+    <aside className="absolute w-[200px]   border-r text-2xl border-black/10">
+      <div className="top-2 left-4 py-6">
+        Project Mood
       </div>
       <ul>
         {links.map(link=>(
-          <li className="px-2 py-6 text-xl">
+          <li className="py-6 text-xl top-2 left-4">
             <Link href={link.href}>
               {link.label}
             </Link>
@@ -22,13 +22,13 @@ function DashBoardLayout({ children }) {
         ))}
       </ul>
     </aside>
-    <div className="ml-[200px] h-full">
+    <div className="ml-[200px]">
       <header className="h-[60px] border-b border-black/10 ">
         <div className="h-full w-full px-6 flex items-center justify-end">
           <UserButton />
         </div>
       </header>
-      <div className="h-[calc(100vh-60px)]">{children}</div>
+      <div className="h-[calc(100vh-70px)]">{children}</div>
     </div>
   </div>
 }

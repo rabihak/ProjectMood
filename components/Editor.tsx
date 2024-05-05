@@ -26,7 +26,7 @@ const Editor = ({ entry }) => {
     }
   })
   return (
-    <div className="w-full h-full grid grid-cols-3">
+    <div className="w-full h-full grid grid-cols-3 relative">
       <div className="absolute left-0 top-0 p-2">
         {isLoading ? (
           <Spinner />
