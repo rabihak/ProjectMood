@@ -3,8 +3,8 @@ import Link from "next/link"
 
 function DashBoardLayout({ children }) {
   const links =[
-    {href:'/',label:"Home"},
-    {href:'/journal',label:"Journal"},
+    {href:'/',label:"Home",id:1},
+    {href:'/journal',label:"Journal",id:2},
 
   ]
   return <div className=" w-full relative">
