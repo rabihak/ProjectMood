@@ -15,7 +15,7 @@ function DashBoardLayout({ children }) {
       <ul>
         {links.map(link=>(
           <li className="py-6 text-xl top-2 left-4">
-            <Link href={link.href}>
+            <Link href={link.href} key={link.label}>
               {link.label}
             </Link>
           </li>
