@@ -19,7 +19,11 @@ export const POST = async ()=>{
   await prisma.analysis.create({
     data:{
       entryId: entry.id,
-      ...analysis
+      mood: analysis?.mood as string,
+      summary: analysis?.summary as string,
+      subject: analysis?.subject as string,
+      negative: analysis?.negative as boolean,
+      color: analysis?.color as string,
     }
   })
 

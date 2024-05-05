@@ -5,7 +5,7 @@ import { useState } from "react"
 import { useAutosave } from "react-autosave"
 import Spinner from './Spinner';
 
-const Editor = ({ entry }) => {
+const Editor = ({ entry } : any ) => {
   const [value, setValue] = useState(entry.content)
   const [isLoading, setIsloading] = useState(false)
   const [analysis,setAnalysis] = useState(entry.analysis)

@@ -3,31 +3,42 @@ import { getUserByClerkId } from "@/utils/auth"
 import { prisma } from "@/utils/db"
 import { NextResponse } from "next/server"
 
-export const PATCH = async (request :Request,{params})=>{
+export const PATCH = async (request: Request, { params }: any) => {
   const user = await getUserByClerkId()
-  const {content} = await request.json()
+  const { content } = await request.json()
   const updatedEntry = await prisma.journalEntry.update({
-    where:{
-      userId_id:{
-        userId:user.id,
-        id:params.id
+    where: {
+      userId_id: {
+        userId: user.id,
+        id: params.id
       }
     },
-    data:{
+    data: {
       content
     }
   })
   const analysis = (await analyze(updatedEntry.content))
+
   const updated = await prisma.analysis.upsert({
-    where:{
+    where: {
       entryId: updatedEntry.id,
     },
-    create:{
+    create: {
       entryId: updatedEntry.id,
-      ...analysis
+      mood: analysis?.mood as string,
+      summary: analysis?.summary as string,
+      subject: analysis?.subject as string,
+      negative: analysis?.negative as boolean,
+      color: analysis?.color as string,
     },
-    update:analysis
+    update: {
+      mood: analysis?.mood,
+      summary: analysis?.summary,
+      subject: analysis?.subject,
+      negative: analysis?.negative,
+      color: analysis?.color,
+    }
   })
 
-  return NextResponse.json({data:{...updatedEntry,analysis:updated}})
+  return NextResponse.json({ data: { ...updatedEntry, analysis: updated } })
 }

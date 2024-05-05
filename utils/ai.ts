@@ -20,7 +20,7 @@ const parser = StructuredOutputParser.fromZodSchema(
 ) 
 
 
-const getPrompt = async (content) => {
+const getPrompt = async (content : any) => {
   const format_instructions = parser.getFormatInstructions()
   
   const prompt = new PromptTemplate({
@@ -36,7 +36,7 @@ const getPrompt = async (content) => {
   
   return input
 }
-export const analyze = async (content)=>{
+export const analyze = async (content : any)=>{
   const input = await getPrompt(content)
   const model = new ChatGoogleGenerativeAI({
     model: "gemini-pro",
@@ -46,7 +46,7 @@ export const analyze = async (content)=>{
   const result = await model.invoke(input)
   
   try{
-    return parser.parse(result.content)
+    return parser.parse(result.content as string)
   }catch(e){
     console.log(e)
   }
