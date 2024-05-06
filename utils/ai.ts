@@ -2,6 +2,10 @@ import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import {StructuredOutputParser} from "langchain/output_parsers"
 import { PromptTemplate } from "@langchain/core/prompts";
 import z from "zod"
+import { Document } from "langchain/document";
+import { loadQARefineChain } from "langchain/chains";
+import { GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";
+import { MemoryVectorStore } from "langchain/vectorstores/memory";
 
 const parser = StructuredOutputParser.fromZodSchema(
   z.object({
@@ -51,4 +55,27 @@ export const analyze = async (content : any)=>{
     console.log(e)
   }
   console.log(result)
+}
+
+export const qa = async (question:any,entries:any)=>{
+  const docs = entries.map((entry:any)=>{
+    return new Document({
+      pageContent:entry.content,
+      metadata:{id:entry.id,createdAt:entry.createdAt}
+    })
+  })
+  const model =  new ChatGoogleGenerativeAI({
+    model: "gemini-pro",
+    maxOutputTokens: 2048,
+    temperature:0.7,
+  });
+  const chain = loadQARefineChain(model)
+  const embeddings = new GoogleGenerativeAIEmbeddings()
+  const store = await MemoryVectorStore.fromDocuments(docs,embeddings)
+  const relevantDocs = await store.similaritySearch(question)
+  const res = await chain.invoke({
+    input_documents:relevantDocs,
+    question,
+  })
+  return res.output_text
 }
