@@ -12,7 +12,7 @@ const isProtectedRoute = createRouteMatcher([
   '/journal',
   '/journal/(.*)',
   '/new-user/(.*)',
-
+  '/history',
   '/journal(.*)/(.*)',
   '/api(.*)/(.*)',
 ]);

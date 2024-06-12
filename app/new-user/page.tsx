@@ -14,6 +14,8 @@ const createNewUser = async () =>{
       data:{
         clerkId:user?.id,
         email:user.emailAddresses[0].emailAddress,
+        userName:user.username ?? null,
+        firstName:user.firstName,
       }
     })
   }

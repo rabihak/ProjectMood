@@ -5,11 +5,25 @@ import { useState } from "react"
 import { useAutosave } from "react-autosave"
 import Spinner from './Spinner';
 
-const Editor = ({ entry } : any ) => {
-  const [value, setValue] = useState(entry.content)
+interface analysisint {
+  id: string
+  createdAt: Date
+  updatedAt: Date
+  entryId: string
+  mood: string
+  summary: string
+  color: string
+  negative: boolean
+  subject: string;
+  sentimentScore: number
+  userId: number
+}
+const Editor = ({ entry }: any) => {
+  console.log("entry", entry)
+  const [value, setValue] = useState(entry?.content)
   const [isLoading, setIsloading] = useState(false)
-  const [analysis,setAnalysis] = useState(entry.analysis)
-  const { mood, summary, color, subject, negative } = analysis
+  const [analysis, setAnalysis] = useState<analysisint>(entry?.analysis)
+  const { mood, summary, color, subject, negative } = analysis ?? {}
   const analysisData = [
     { name: "Summary", value: summary },
     { name: "Subject", value: subject },
@@ -20,13 +34,14 @@ const Editor = ({ entry } : any ) => {
     data: value,
     onSave: async (_value) => {
       setIsloading(true)
-      const data = await updateEntry(entry.id, _value)
-      setAnalysis(data.analysis)
+      const data = await updateEntry(entry?.id, _value)
+      setAnalysis(data?.analysis)
       setIsloading(false)
     }
   })
   return (
-    <div className="w-full h-full grid grid-cols-3 relative">
+    
+    <div className=" w-full h-full grid grid-cols-1  relative">
       <div className="absolute left-0 top-0 p-2">
         {isLoading ? (
           <Spinner />
