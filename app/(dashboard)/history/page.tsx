@@ -22,7 +22,8 @@ const History= async ()=>{
   
     return <div className="w-full h-full"> 
           <div className="w-full h-full flex justify-center items-center flex-col ">
-          <div className="w-full px-6 py-2">{`Avg. sentiment ${avg}`}</div>
+          <div className="w-full px-6 py-2 text-2xl mt-5 text-center">{`Average Mood Score : ${avg}`}</div>
+          <hr className="flex w-[100%] mt-2 mb-2 h-[1px] border-black"/>
           <HistoryChart data={analyses}></HistoryChart>
           </div>
        </div> 

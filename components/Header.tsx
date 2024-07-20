@@ -44,15 +44,15 @@ const Header = () => {
         open={open}
         onClose={toggleDrawer(false)}
       >
-        <div className='bg-[#0065FF] rounded-r-md text-white w-full h-full'>
-        <div className=" pt-8 px-3 ">
+        <div className='rounded-r-md text-black w-full h-full'>
+        <div className=" pt-8 px-4 ">
         <h1 className='text-2xl font-bold pl-5'>{`MOOD`}</h1>
-        <hr className=' w-[100%] mt-2  h-[1px] '/>
+        <hr className=' w-[100%] mt-2  h-[1.5px] bg-black px-4'/>
         </div>
         <div className="py-2 px-4">
           <ul>
           {Links.map(link=>(
-          <li className={`text-xl my-2 py-2 pl-1 hover:cursor-pointer ${pathname ===link.href?"bg-[#035AE1] rounded-lg" :''}`} key={link.label} >
+          <li className={`text-xl my-2 py-2 pl-1 hover:cursor-pointer ${pathname ===link.href?"bg-[#96D9F7] text-black rounded-lg" :''} `} key={link.label} >
             <Link href={link.href} onClick={toggleDrawer(false)} >
               {link.Icon} {link.label}
             </Link>

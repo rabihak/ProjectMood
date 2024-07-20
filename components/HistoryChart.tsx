@@ -1,8 +1,7 @@
 'use client'
-import { AnyPtrRecord } from 'dns'
-import { ResponsiveContainer, LineChart, Line, XAxis, Tooltip, YAxis } from 'recharts'
+import { ResponsiveContainer, LineChart, Line, XAxis, Tooltip, YAxis, CartesianGrid } from 'recharts'
 
-const CustomTooltip = ({ payload, label, active } :any) => {
+const CustomTooltip = ({ payload, label, active }: any) => {
   const dateLabel = new Date(label).toLocaleString('en-us', {
     weekday: 'long',
     year: 'numeric',
@@ -28,11 +27,17 @@ const CustomTooltip = ({ payload, label, active } :any) => {
 
   return null
 }
-
-const HistoryChart = ({ data }:any) => {
+const renderCustomAxisTick = ({ x, y, payload }:any) => {
+  const valueDate = new Date(payload.value.toString())
   return (
-    <ResponsiveContainer width="100%" height="100%" className='pl-[-10px] bg-slate-400'>
+    <text x={x - 100} y={y + 12} width={40} height={40} viewBox="0 0 1024 1024" fill="#666"> {`${valueDate.toDateString()} ${valueDate.toLocaleTimeString()}`} </text>
+  )
+}
+const HistoryChart = ({ data }: any) => {
+  return (
+    <ResponsiveContainer width="100%" height="100%" className='p-[10px] pl-5 pr-10 '>
       <LineChart width={300} height={100} data={data} >
+        <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
         <Line
           type="monotone"
           dataKey="sentimentScore"
@@ -40,8 +45,8 @@ const HistoryChart = ({ data }:any) => {
           strokeWidth={2}
           activeDot={{ r: 8 }}
         />
-        <XAxis dataKey="updatedAt" />
-        <YAxis dataKey="sentimentScore" fontSize={"12px"} padding={{top:10,bottom:10}} />
+        <XAxis dataKey="updatedAt" tick={renderCustomAxisTick} />
+        <YAxis dataKey="sentimentScore" fontSize={"12px"} padding={{ top: 10, bottom: 10 }} />
 
         <Tooltip content={<CustomTooltip />} />
       </LineChart>

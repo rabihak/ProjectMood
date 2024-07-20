@@ -23,7 +23,7 @@ const JournalPage = async () => {
   const user = await getUserByClerkId()
   const entries = await getEntries()
   return <div className="p-6 bg-zinc-400/10 h-full flex flex-col">
-    <div className="max-h-[42%]">
+    <div className="max-h-[38%]">
     <h2 className="text-3xl mb-4 capitalize">Welcome, {user.firstName}</h2>
     <div className="my-6 "><Question/></div>
     </div>
