@@ -50,7 +50,7 @@ const Editor = ({ entry }: any) => {
         )}
       </div>
       <div className="col-span-2">
-        <textarea className="w-full h-full p-8 text-xl outline-none " value={value} onChange={e => setValue(e.target.value)} />
+        <textarea className="w-full h-full p-8 text-xl outline-none " maxLength={1000} value={value} onChange={e => setValue(e.target.value)} />
       </div>
       <div className="border-l border-black/10">
         <div className="px-6 py-10" style={{ backgroundColor: color }}>

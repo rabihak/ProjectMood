@@ -1,4 +1,6 @@
-import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+
+import { ChatOpenAI, OpenAI } from "@langchain/openai";
+
 import { StructuredOutputParser } from "langchain/output_parsers"
 import { PromptTemplate } from "@langchain/core/prompts";
 import z from "zod"
@@ -24,15 +26,16 @@ const parser = StructuredOutputParser.fromZodSchema(
   })
 )
 
-
+const OPENROUTER_BASE_URL ="https://openrouter.ai"
 const getPrompt = async (content: any) => {
   const format_instructions = parser.getFormatInstructions()
 
   const prompt = new PromptTemplate({
     template:
-      'Analyze the following journal entry. Follow the instructions and format your response to match the format instructions,Dont return null to any of the value ALWAYS FILL THEM, no matter what! \n{format_instructions}\n{entry},',
+      'Analyze the following journal entry. Follow the instructions and format your response to match the format instructions,Dont return null to any of the value ALWAYS FILL THEM, no matter what! \n{format_instructions}\n{entry},elliminate ; from the message response',
     inputVariables: ['entry'],
     partialVariables: { format_instructions },
+
   })
 
   const input = await prompt.format({
@@ -43,13 +46,19 @@ const getPrompt = async (content: any) => {
 }
 export const analyze = async (content: any) => {
   const input = await getPrompt(content)
-  const model = new ChatGoogleGenerativeAI({
-    model: "gemini-pro",
-    maxOutputTokens: 2048,
-    temperature: 0.7,
-  });
+  const model = new ChatOpenAI(
+    {
+      modelName: "openai/gpt-4o-mini",
+      temperature: 0.8,
+      maxTokens: 300,
+      streaming: true,
+      openAIApiKey: process.env.OPENAI_API_KEY,
+    },
+    {
+      basePath: `${OPENROUTER_BASE_URL}/api/v1`,
+    }
+    );
   const result = await model.invoke(input)
-
   try {
     return parser.parse(result.content as string)
   } catch (e) {
@@ -65,11 +74,18 @@ export const qa = async (question: any, entries: any) => {
       metadata: { id: entry.id, createdAt: entry.createdAt }
     })
   })
-  const model = new ChatGoogleGenerativeAI({
-    model: "gemini-pro",
-    maxOutputTokens: 2048,
-    temperature: 0.7,
-  });
+  const model = new ChatOpenAI(
+    {
+      modelName: "openai/gpt-4o-mini",
+      temperature: 0.8,
+      maxTokens: 300,
+      streaming: true,
+      openAIApiKey: process.env.OPENAI_API_KEY,
+    },
+    {
+      basePath: `${OPENROUTER_BASE_URL}/api/v1`,
+    }
+    );
   const chain = loadQARefineChain(model)
   const embeddings = new GoogleGenerativeAIEmbeddings()
   const store = await MemoryVectorStore.fromDocuments(docs, embeddings)
