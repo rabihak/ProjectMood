@@ -48,8 +48,8 @@ export const analyze = async (content: any) => {
   const input = await getPrompt(content)
   const model = new ChatOpenAI(
     {
-      modelName: "openai/gpt-4o-mini",
-      temperature: 0.8,
+      modelName: "google/gemini-3.1-flash-lite-preview",
+      temperature: 0.5,
       maxTokens: 300,
       streaming: true,
       openAIApiKey: process.env.OPENAI_API_KEY,
@@ -62,9 +62,8 @@ export const analyze = async (content: any) => {
   try {
     return parser.parse(result.content as string)
   } catch (e) {
-    console.log(e)
+    throw e
   }
-  console.log(result)
 }
 
 export const qa = async (question: any, entries: any) => {
@@ -76,9 +75,9 @@ export const qa = async (question: any, entries: any) => {
   })
   const model = new ChatOpenAI(
     {
-      modelName: "openai/gpt-4o-mini",
-      temperature: 0.8,
-      maxTokens: 300,
+      modelName: "google/gemini-3.1-flash-lite-preview",
+      temperature: 0.5,
+      maxTokens: 400,
       streaming: true,
       openAIApiKey: process.env.OPENAI_API_KEY,
     },

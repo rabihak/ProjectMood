@@ -5,9 +5,7 @@ import { revalidatePath } from "next/cache"
 import { NextResponse } from "next/server"
 
 export const POST = async ()=>{
-  const user = await getUserByClerkId() 
-  console.log("user",user);
-  
+  const user = await getUserByClerkId()
   const entry = await prisma.journalEntry.create({
     data:{
       userId : user.id,

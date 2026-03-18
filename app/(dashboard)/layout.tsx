@@ -1,12 +1,16 @@
 import Header from "@/components/Header"
-
+import Box from '@mui/joy/Box'
 
 function DashBoardLayout({ children } : any) {
 
-  return <div className=" w-full relative">
+  return (
+    <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Header />
-      <div className="h-[calc(100vh-3.5rem)]">{children}</div>
-  </div>
+      <Box component="main" sx={{ flex: 1, position: 'relative' }}>
+        {children}
+      </Box>
+    </Box>
+  )
 }
 
 export default DashBoardLayout

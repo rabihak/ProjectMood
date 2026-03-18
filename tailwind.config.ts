@@ -8,6 +8,18 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      colors: {
+        primary: {
+          DEFAULT: 'var(--joy-palette-primary-solidBg)',
+          light: 'var(--joy-palette-primary-lightBg)',
+          dark: 'var(--joy-palette-primary-darkBg)',
+        },
+        secondary: {
+          DEFAULT: 'var(--joy-palette-neutral-solidBg)',
+          light: 'var(--joy-palette-neutral-lightBg)',
+          dark: 'var(--joy-palette-neutral-darkBg)',
+        },
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

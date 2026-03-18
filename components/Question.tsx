@@ -2,41 +2,82 @@
 
 import { askQuestion } from "@/utils/api"
 import { useState } from "react"
+import { Input, Button, Box, Typography, Card, CircularProgress } from '@mui/joy';
+import SendIcon from '@mui/icons-material/Send';
 
 const Question = () => {
   const [value, setValue] = useState("")
   const [loading, setLoading] = useState(false)
   const [response, setResponse] = useState("")
 
-  const onChange = (e: any) => {
-    e.preventDefault()
-    setValue(e.target.value)
-  }
   const handleSubmit = async (e: any) => {
+    e.preventDefault()
     if (value.trim()) {
-      e.preventDefault()
       setResponse("")
       setLoading(true)
-      const answer = await askQuestion(value)
-      setResponse(answer)
-      setValue('')
-      setLoading(false)
+      try {
+        const answer = await askQuestion(value)
+        setResponse(answer)
+        setValue('')
+      } catch (error) {
+        setResponse("Sorry, I couldn't process that question right now.")
+      } finally {
+        setLoading(false)
+      }
     }
-
   }
-  return <>
-    <div className="w-full h-full">
-      <form onSubmit={handleSubmit} className="w-full flex flex-col">
-        <input disabled={loading} value={value} onChange={onChange} maxLength={1000} type="text" placeholder="Ask me about your day!" className="capitalize border w-full border-black/20 px-4 py-2 text-lg rounded-lg " />
-        <div className="flex content-center justify-end mt-4">
-          <button disabled={loading || !value} type="submit" className="bg-sky-400 text-white hover:cursor-pointer disabled:opacity-50 px-4 py-2 w-24 justify-items-end rounded-lg text-lg">Ask</button>
-        </div>
+
+  return (
+    <Box sx={{ width: '100%' }}>
+      <form onSubmit={handleSubmit}>
+        <Box sx={{ display: 'flex', gap: 1 }}>
+          <Input
+            disabled={loading}
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            placeholder="Ask me anything about your journey..."
+            sx={{ flex: 1, borderRadius: 'lg' }}
+            size="lg"
+            endDecorator={
+              <Button 
+                type="submit" 
+                disabled={loading || !value.trim()}
+                variant="solid"
+                color="primary"
+                sx={{ borderRadius: 'md' }}
+              >
+                {loading ? <CircularProgress size="sm" variant="plain" sx={{ color: 'white' }} /> : <SendIcon />}
+              </Button>
+            }
+          />
+        </Box>
       </form>
-      {(loading || response) && <div className="p-4 border-2 border-solid mt-3 flex justify-center content-center text-base bg-sky-800 w-full text-white rounded-md max-h-[16vh] overflow-auto ">
-        {loading && <div>Thinking...</div>}
-        {response && response}
-      </div>}
-    </div>
-  </>
+      
+      {(loading || response) && (
+        <Card 
+          variant="soft" 
+          color="primary"
+          sx={{ 
+            mt: 2, 
+            p: 2, 
+            borderRadius: 'lg',
+            bgcolor: 'primary.lightBg',
+            border: '1px solid',
+            borderColor: 'primary.solidBg',
+            opacity: loading ? 0.7 : 1,
+            transition: 'opacity 0.2s'
+          }}
+        >
+          <Typography level="title-sm" sx={{ color: 'primary.solidBg', mb: 0.5, fontWeight: 'bold' }}>
+            AI Assistant
+          </Typography>
+          <Typography level="body-md" sx={{ color: 'slate.900' }}>
+            {loading ? "Thinking..." : response}
+          </Typography>
+        </Card>
+      )}
+    </Box>
+  )
 }
+
 export default Question

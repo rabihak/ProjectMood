@@ -3,35 +3,60 @@
 import { createNewEntry } from "@/utils/api"
 import { useRouter } from "next/navigation"
 import PostAddIcon from '@mui/icons-material/PostAdd';
-import { CircularProgress } from "@mui/joy";
+import { CircularProgress, Card, Typography, Box } from "@mui/joy";
 import { useState } from "react";
 
 const NewEntryCard = () => {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
+  
   const handleOnClick = async () => {
+    if (loading) return
     setLoading(true)
     const data = await createNewEntry()
     router.push(`/journal/${data.id}`)
-    setLoading(false)
   }
-  return <div className="cursor-pointer overflow-hidden rounded-lg h-50 bg-white shadow">
-    <div className="px-4 py-5 sm:p-6 w-full flex " onClick={handleOnClick}>
-      <PostAddIcon fontSize="large" className="mb-2" />
-      <span className="text-2xl">New Entry</span>
-      {loading &&
-        <div className="justify-end p-1">
+
+  return (
+    <Card 
+      onClick={handleOnClick}
+      variant="solid" 
+      color="primary"
+      sx={{ 
+        cursor: 'pointer',
+        mb: 4,
+        p: 2,
+        borderRadius: 'xl',
+        boxShadow: 'md',
+        transition: 'all 0.2s',
+        '&:hover': {
+          transform: 'translateY(-2px)',
+          boxShadow: 'lg',
+          bgcolor: 'primary.solidHoverBg',
+        },
+        maxWidth: { xs: '100%', sm: '280px' }
+      }}
+    >
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        <PostAddIcon sx={{ fontSize: '2rem' }} />
+        <Typography level="title-lg" textColor="inherit" fontWeight="bold">
+          New Entry
+        </Typography>
+        {loading && (
           <CircularProgress
-            className="bottom-0"
+            variant="plain"
             sx={{
-              "--CircularProgress-size": "25px",
-              "--CircularProgress-trackThickness": "4px",
+              ml: 'auto',
+              color: 'white',
+              "--CircularProgress-size": "24px",
+              "--CircularProgress-trackThickness": "3px",
               "--CircularProgress-progressThickness": "3px"
-            }} />
-        </div>
-      }
-    </div>
-  </div>
+            }} 
+          />
+        )}
+      </Box>
+    </Card>
+  )
 }
 
 export default NewEntryCard
