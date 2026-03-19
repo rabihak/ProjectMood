@@ -1,5 +1,5 @@
 import Header from "@/components/Header"
-import Box from '@mui/joy/Box'
+import { Box } from '@mui/joy'
 
 function DashBoardLayout({ children } : any) {
 

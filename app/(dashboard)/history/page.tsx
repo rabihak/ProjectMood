@@ -1,4 +1,4 @@
-import { EntryCardContainer } from "@/components/EntryCardContainer";
+import EntryCardContainer from "@/components/EntryCardContainer";
 import HistoryFilter from "@/components/HistoryFilter"
 import { getUserByClerkId } from "@/utils/auth"
 import { prisma } from "@/utils/db"

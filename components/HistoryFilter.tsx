@@ -1,6 +1,5 @@
 'use client'
 
-import React from 'react';
 import { Tabs, TabList, Tab, tabClasses, Box, Typography } from '@mui/joy';
 import { useRouter } from 'next/navigation';
 

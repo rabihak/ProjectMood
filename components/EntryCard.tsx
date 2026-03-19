@@ -1,7 +1,4 @@
-import Typography from '@mui/joy/Typography';
-import Card from '@mui/joy/Card';
-import Box from '@mui/joy/Box';
-import Chip from '@mui/joy/Chip';
+import { Typography, Card, Box, Chip } from '@mui/joy';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
 const EntryCard = ({ entry }: any) => {

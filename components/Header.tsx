@@ -4,19 +4,11 @@ import React, { useState } from 'react'
 import { UserButton, SignOutButton } from "@clerk/nextjs"
 import Link from "next/link"
 import MenuIcon from '@mui/icons-material/Menu';
-import Drawer from '@mui/joy/Drawer';
-import IconButton from '@mui/joy/IconButton';
+import { Drawer, IconButton, List, ListItem, ListItemButton, ListItemDecorator, Typography, Box, Button } from '@mui/joy';
 import HomeIcon from '@mui/icons-material/Home';
 import HistoryIcon from '@mui/icons-material/History';
-import List from '@mui/joy/List';
-import ListItem from '@mui/joy/ListItem';
-import ListItemButton from '@mui/joy/ListItemButton';
-import ListItemDecorator from '@mui/joy/ListItemDecorator';
-import Typography from '@mui/joy/Typography';
 import { usePathname, useRouter } from 'next/navigation'
-import Box from '@mui/joy/Box';
 import AddIcon from '@mui/icons-material/Add';
-import Button from '@mui/joy/Button';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { createNewEntry } from "@/utils/api"
 

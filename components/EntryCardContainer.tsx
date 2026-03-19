@@ -5,7 +5,7 @@ import Link from 'next/link'
 import EntryCard from './EntryCard'
 import { Box, CircularProgress } from '@mui/joy'
 
-export const EntryCardContainer = ({ entries }: any) => {
+const EntryCardContainer = ({ entries }: any) => {
   const [loadingId, setLoadingId] = useState<string | null>(null)
   
   const handleOnClick = (entryId: string) => {
@@ -63,3 +63,5 @@ export const EntryCardContainer = ({ entries }: any) => {
     </Box>
   )
 }
+
+export default EntryCardContainer

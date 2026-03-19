@@ -1,10 +1,8 @@
-import { EntryCardContainer } from "@/components/EntryCardContainer"
+import EntryCardContainer from "@/components/EntryCardContainer"
 import Question from "@/components/Question"
 import { getUserByClerkId } from "@/utils/auth"
 import { prisma } from "@/utils/db"
-import Typography from '@mui/joy/Typography';
-import Box from '@mui/joy/Box';
-import Card from '@mui/joy/Card';
+import { Typography, Box, Card } from '@mui/joy';
 import EntryCard from "@/components/EntryCard"
 import Link from "next/link"
 import NewEntryCard from "@/components/NewEntryCard"
@@ -40,7 +38,7 @@ const JournalPage = async () => {
             <Typography level="h1" fontWeight="xl" sx={{ mb: 1, color: 'primary.solidBg', fontSize: { xs: '2.5rem', md: '3.5rem' } }}>
               Welcome, {user.firstName}
             </Typography>
-            <Typography level="body-xl" sx={{ color: 'text.secondary', mb: 4, maxWidth: '500px' }}>
+            <Typography  sx={{ color: 'text.secondary', mb: 4, maxWidth: '500px' }}>
               Your mental well-being matters. Document your thoughts and let AI help you find patterns.
             </Typography>
             
@@ -98,7 +96,7 @@ const JournalPage = async () => {
           </Box>
           
           {otherEntries.length === 0 && !latestEntry ? (
-            <Card variant="dashed" sx={{ py: 8, textAlign: 'center', bgcolor: 'transparent' }}>
+            <Card  sx={{ py: 8, textAlign: 'center', bgcolor: 'transparent' }}>
               <Typography level="title-lg" sx={{ mb: 1 }}>No entries yet</Typography>
               <Typography level="body-md" sx={{ color: 'text.secondary' }}>
                 Start your journey by creating a new entry above.
