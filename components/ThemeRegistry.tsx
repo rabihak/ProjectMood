@@ -8,9 +8,10 @@ const theme = extendTheme({
     light: {
       palette: {
         primary: {
-          solidBg: '#09090b', // Zinc 950
-          solidHoverBg: '#18181b', // Zinc 900
-          lightBg: '#f4f4f5', // Zinc 100
+          solidBg: '#4f46e5', // Indigo 600
+          solidHoverBg: '#4338ca', // Indigo 700
+          lightBg: '#eef2ff', // Indigo 50
+          solidColor: '#ffffff',
         },
         neutral: {
           solidBg: '#71717a', // Zinc 500
@@ -22,12 +23,12 @@ const theme = extendTheme({
     dark: {
       palette: {
         primary: {
-          solidBg: '#fafafa', // Zinc 50
+          solidBg: '#ffffff',
           solidHoverBg: '#f4f4f5', // Zinc 100
           solidColor: '#09090b', // Zinc 950
-          lightBg: 'rgba(250, 250, 250, 0.1)',
-          softBg: 'rgba(250, 250, 250, 0.15)',
-          softColor: '#fafafa',
+          lightBg: 'rgba(255, 255, 255, 0.1)',
+          softBg: 'rgba(255, 255, 255, 0.15)',
+          softColor: '#ffffff',
         },
         neutral: {
           solidBg: '#27272a', // Zinc 800
@@ -41,7 +42,7 @@ const theme = extendTheme({
           surface: '#18181b', // Zinc 900
         },
         text: {
-          primary: '#fafafa', // Zinc 50
+          primary: '#ffffff',
           secondary: '#a1a1aa', // Zinc 400
           tertiary: '#71717a', // Zinc 500
         },

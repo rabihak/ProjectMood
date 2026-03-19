@@ -34,3 +34,13 @@ export const askQuestion = async (question : any)=>{
     return data.data
   }
 }
+
+export const deleteEntry = async (id: any) => {
+  const res = await fetch(new Request(createURL(`/api/journal/${id}`), {
+    method: 'DELETE',
+  }))
+  if (res.ok) {
+    const data = await res.json()
+    return data.data
+  }
+}

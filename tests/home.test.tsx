@@ -2,24 +2,11 @@ import { render, screen } from '@testing-library/react'
 import { vi } from 'vitest'
 import Page from '../app/page'
 
-vi.mock('@clerk/nextjs', () => {
-  // Create an mockedFunctions object to match the functions we are importing from the @nextjs/clerk package in the ClerkComponent component.
-  const mockedFunctions = {
+vi.mock('@clerk/nextjs/server', () => {
+  return {
     auth: () =>
-      new Promise((resolve) =>
-        resolve({ userId: 'user_2NNEqL2nrIRdJ194ndJqAHwEfxC' })
-      ),
-    ClerkProvider: ({ children }) => <div>{children}</div>,
-    useUser: () => ({
-      isSignedIn: true,
-      user: {
-        id: 'user_2NNEqL2nrIRdJ194ndJqAHwEfxC',
-        fullName: 'Charles Harris',
-      },
-    }),
+      Promise.resolve({ userId: null }), // Mock as null to see the landing page
   }
-
-  return mockedFunctions
 })
 
 vi.mock('next/font/google', () => {
@@ -28,7 +15,14 @@ vi.mock('next/font/google', () => {
   }
 })
 
+vi.mock('next/navigation', () => {
+  return {
+    redirect: vi.fn(),
+  }
+})
+
 test(`Home`, async () => {
   render(await Page())
-  expect(screen.getByText('The best Journal app, period.')).toBeTruthy()
+  expect(screen.getByText(/Understand your/i)).toBeTruthy()
+  expect(screen.getByText(/Project Mood/i)).toBeTruthy()
 })

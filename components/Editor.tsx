@@ -1,11 +1,17 @@
 'use client'
 
-import { updateEntry } from "@/utils/api"
+import { updateEntry, deleteEntry } from "@/utils/api"
 import React, { useState } from "react"
 import { useAutosave } from "react-autosave"
 import Spinner from './Spinner';
-import { Box, Typography, Card, Divider, List, ListItem, ListItemContent, Chip } from '@mui/joy';
+import { 
+  Box, Typography, Card, Divider, List, ListItem, ListItemContent, Chip, Button,
+  Modal, ModalDialog, DialogTitle, DialogContent, Stack
+} from '@mui/joy';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import DeleteIcon from '@mui/icons-material/Delete';
+import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
+import { useRouter } from "next/navigation"
 
 interface analysisint {
   id: string
@@ -24,7 +30,10 @@ interface analysisint {
 const Editor = ({ entry }: any) => {
   const [value, setValue] = useState(entry?.content)
   const [isLoading, setIsloading] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
+  const [open, setOpen] = useState(false)
   const [analysis, setAnalysis] = useState<analysisint>(entry?.analysis)
+  const router = useRouter()
   
   const { mood, summary, color, subject, negative } = analysis ?? {}
   
@@ -45,6 +54,19 @@ const Editor = ({ entry }: any) => {
       }
     }
   })
+
+  const handleDelete = async () => {
+    setIsDeleting(true)
+    try {
+      await deleteEntry(entry.id)
+      router.push('/journal')
+      router.refresh()
+    } catch (error) {
+      console.error("Delete failed:", error)
+      setIsDeleting(false)
+      setOpen(false)
+    }
+  }
 
   return (
     <Box sx={{ 
@@ -67,7 +89,7 @@ const Editor = ({ entry }: any) => {
           right: 24, 
           display: 'flex', 
           alignItems: 'center', 
-          gap: 1,
+          gap: 2,
           zIndex: 10,
           bgcolor: 'background.surface',
           opacity: 0.8,
@@ -91,7 +113,7 @@ const Editor = ({ entry }: any) => {
         </Box>
         
         <textarea 
-          className="w-full h-full text-lg sm:text-xl outline-none resize-none bg-transparent dark:text-slate-200 transition-colors duration-300"
+          className="w-full h-full text-lg sm:text-xl outline-none resize-none bg-transparent dark:text-white transition-colors duration-300"
           placeholder="Start writing your thoughts..."
           value={value} 
           onChange={e => setValue(e.target.value)} 
@@ -147,8 +169,41 @@ const Editor = ({ entry }: any) => {
               </React.Fragment>
             ))}
           </List>
+          
+          <Box sx={{ mt: 4 }}>
+            <Button 
+              variant="soft" 
+              color="danger" 
+              startDecorator={<DeleteIcon />}
+              fullWidth
+              onClick={() => setOpen(true)}
+            >
+              Delete Entry
+            </Button>
+          </Box>
         </Box>
       </Box>
+
+      <Modal open={open} onClose={() => setOpen(false)}>
+        <ModalDialog variant="outlined" role="alertdialog">
+          <DialogTitle>
+            <WarningRoundedIcon />
+            Confirm Deletion
+          </DialogTitle>
+          <Divider />
+          <DialogContent>
+            Are you sure you want to delete this journal entry? This action cannot be undone.
+          </DialogContent>
+          <Stack direction="row-reverse" spacing={1}>
+            <Button variant="solid" color="danger" onClick={handleDelete} loading={isDeleting}>
+              Delete entry
+            </Button>
+            <Button variant="plain" color="neutral" onClick={() => setOpen(false)}>
+              Cancel
+            </Button>
+          </Stack>
+        </ModalDialog>
+      </Modal>
     </Box>
   )
 }
