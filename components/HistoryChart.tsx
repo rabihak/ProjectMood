@@ -20,8 +20,7 @@ const CustomTooltip = ({ payload, label, active }: any) => {
     })
 
     return (
-      <Card 
-        variant="elevated" 
+      <Card  
         sx={{ 
           p: 2, 
           bgcolor: 'rgba(255, 255, 255, 0.95)', 

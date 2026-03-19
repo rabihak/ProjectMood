@@ -10,12 +10,10 @@ const theme = extendTheme({
         primary: {
           solidBg: '#0f172a', // Slate 900
           solidHoverBg: '#1e293b', // Slate 800
-          lightBg: '#f1f5f9', // Slate 100
         },
         neutral: {
           solidBg: '#64748b', // Slate 500
           solidHoverBg: '#475569', // Slate 600
-          lightBg: '#f8fafc', // Slate 50
         },
       },
     },

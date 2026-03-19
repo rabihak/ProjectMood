@@ -5,8 +5,8 @@ const nextConfig = {
   },
   eslint:{
     ignoreDuringBuilds:true,
-  }
-  
+  },
+  transpilePackages: ['recharts']
 };
 
 

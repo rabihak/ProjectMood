@@ -1,10 +1,12 @@
 import { EntryCardContainer } from "@/components/EntryCardContainer";
-import HistoryChart from "@/components/HistoryChart"
 import HistoryFilter from "@/components/HistoryFilter"
 import { getUserByClerkId } from "@/utils/auth"
 import { prisma } from "@/utils/db"
 import { Box, Typography, Card, Divider } from '@mui/joy';
 import { startOfWeek, endOfWeek, subWeeks, subMonths, startOfMonth } from 'date-fns';
+import dynamic from 'next/dynamic';
+
+const HistoryChart = dynamic(() => import('@/components/HistoryChart'), { ssr: false });
 
 const getData = async (range: string) => {
   const user = await getUserByClerkId()
