@@ -41,7 +41,8 @@ const EntryCardContainer = ({ entries }: any) => {
                   display: 'flex', 
                   alignItems: 'center', 
                   justifyContent: 'center',
-                  bgcolor: 'rgba(255, 255, 255, 0.4)',
+                  bgcolor: 'background.surface',
+                  opacity: 0.5,
                   borderRadius: 'xl',
                   zIndex: 10,
                   backdropFilter: 'blur(2px)'

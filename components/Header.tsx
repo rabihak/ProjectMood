@@ -11,6 +11,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import AddIcon from '@mui/icons-material/Add';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { createNewEntry } from "@/utils/api"
+import ThemeToggle from './ThemeToggle'
 
 interface LabelInterface {
   href: string;
@@ -132,7 +133,7 @@ const Header = () => {
         </Box>
       </Drawer>
 
-      <header className="sticky top-0 z-50 flex h-16 items-center justify-between border-b border-slate-200 bg-white/80 px-6 backdrop-blur-md">
+      <header className="sticky top-0 z-50 flex h-16 items-center justify-between border-b border-zinc-200 bg-white/95 px-6 backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-950/95 transition-colors duration-300">
         <div className="flex items-center gap-4">
           <IconButton
             variant="plain"
@@ -140,16 +141,17 @@ const Header = () => {
             onClick={toggleDrawer(true)}
             sx={{ 
               borderRadius: 'lg',
-              '&:hover': { bgcolor: 'slate.50' }
+              '&:hover': { bgcolor: 'neutral.lightBg' }
             }}
           >
             <MenuIcon />
           </IconButton>
-          <Typography level="h4" fontWeight="xl" sx={{ color: 'primary.solidBg', display: { xs: 'none', sm: 'block' } }}>
+          <Typography level="h4" fontWeight="xl" sx={{ color: 'text.primary', display: { xs: 'none', sm: 'block' }, letterSpacing: '-0.02em' }}>
             Project Mood
           </Typography>
         </div>
         <div className="flex items-center gap-4">
+          <ThemeToggle />
           <UserButton afterSignOutUrl="/" />
         </div>
       </header>

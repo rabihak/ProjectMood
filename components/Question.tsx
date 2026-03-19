@@ -63,7 +63,7 @@ const Question = () => {
             borderRadius: 'lg',
             bgcolor: 'primary.lightBg',
             border: '1px solid',
-            borderColor: 'primary.solidBg',
+            borderColor: 'primary.softBg',
             opacity: loading ? 0.7 : 1,
             transition: 'opacity 0.2s'
           }}
@@ -71,7 +71,7 @@ const Question = () => {
           <Typography level="title-sm" sx={{ color: 'primary.solidBg', mb: 0.5, fontWeight: 'bold' }}>
             AI Assistant
           </Typography>
-          <Typography level="body-md" sx={{ color: 'slate.900' }}>
+          <Typography level="body-md">
             {loading ? "Thinking..." : response}
           </Typography>
         </Card>

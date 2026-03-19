@@ -23,7 +23,8 @@ const CustomTooltip = ({ payload, label, active }: any) => {
       <Card  
         sx={{ 
           p: 2, 
-          bgcolor: 'rgba(255, 255, 255, 0.95)', 
+          bgcolor: 'background.surface', 
+          opacity: 0.95,
           backdropFilter: 'blur(8px)',
           border: '1px solid',
           borderColor: 'divider',

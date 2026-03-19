@@ -47,7 +47,7 @@ const NewEntryCard = () => {
             variant="plain"
             sx={{
               ml: 'auto',
-              color: 'white',
+              color: 'inherit',
               "--CircularProgress-size": "24px",
               "--CircularProgress-trackThickness": "3px",
               "--CircularProgress-progressThickness": "3px"

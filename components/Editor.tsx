@@ -69,10 +69,13 @@ const Editor = ({ entry }: any) => {
           alignItems: 'center', 
           gap: 1,
           zIndex: 10,
-          bgcolor: 'rgba(255,255,255,0.8)',
+          bgcolor: 'background.surface',
+          opacity: 0.8,
           p: 0.5,
           borderRadius: 'md',
-          backdropFilter: 'blur(4px)'
+          backdropFilter: 'blur(4px)',
+          border: '1px solid',
+          borderColor: 'divider'
         }}>
           {isLoading ? (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -88,7 +91,7 @@ const Editor = ({ entry }: any) => {
         </Box>
         
         <textarea 
-          className="w-full h-full text-lg sm:text-xl outline-none resize-none bg-transparent"
+          className="w-full h-full text-lg sm:text-xl outline-none resize-none bg-transparent dark:text-slate-200 transition-colors duration-300"
           placeholder="Start writing your thoughts..."
           value={value} 
           onChange={e => setValue(e.target.value)} 

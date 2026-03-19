@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={`${inter.variable} ${inter.className}`}>
+        <body className={`${inter.variable} ${inter.className} bg-white dark:bg-zinc-950 transition-colors duration-300`}>
           <ThemeRegistry>
             {children}
             <SpeedInsights />
