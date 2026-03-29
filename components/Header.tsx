@@ -7,6 +7,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Drawer, IconButton, List, ListItem, ListItemButton, ListItemDecorator, Typography, Box, Button } from '@mui/joy';
 import HomeIcon from '@mui/icons-material/Home';
 import HistoryIcon from '@mui/icons-material/History';
+import AssessmentIcon from '@mui/icons-material/Assessment';
 import { usePathname, useRouter } from 'next/navigation'
 import AddIcon from '@mui/icons-material/Add';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -29,6 +30,7 @@ const Header = () => {
   const Links: LabelInterface[] = [
     { href: '/journal', label: "Journal", id: 1, Icon: <HomeIcon /> },
     { href: '/history', label: "History", id: 2, Icon: <HistoryIcon /> },
+    { href: '/reports', label: "Reports", id: 3, Icon: <AssessmentIcon /> },
   ]
 
   const toggleDrawer = (inOpen: boolean) => (event: any) => {

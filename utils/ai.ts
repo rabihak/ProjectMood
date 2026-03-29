@@ -23,6 +23,16 @@ const parser = StructuredOutputParser.fromZodSchema(
   })
 )
 
+const reportParser = StructuredOutputParser.fromZodSchema(
+  z.object({
+    summary: z.string().describe("Overall summary of the emotional state over the period."),
+    topSubjects: z.array(z.string()).describe("List of 3-5 recurring themes or subjects."),
+    commonMood: z.string().describe("The most frequent emotional state."),
+    advice: z.string().describe("Empathetic AI advice based on the trends."),
+    scoreTrend: z.string().describe("Brief description of how the sentiment score changed (e.g., 'improving', 'declining', 'stable').")
+  })
+)
+
 const OPENROUTER_BASE_URL ="https://openrouter.ai"
 
 const getPrompt = async (content: string) => {
@@ -46,10 +56,9 @@ export const analyze = async (content: string) => {
   const input = await getPrompt(content)
   const model = new ChatOpenAI(
     {
-      modelName: "google/gemini-3.1-flash-lite-preview",
-      temperature: 0.5,
-      maxTokens: 300,
-      streaming: true,
+      modelName: "google/gemini-2.0-flash-exp:free",
+      temperature: 0,
+      maxTokens: 500,
       openAIApiKey: process.env.OPENAI_API_KEY,
     },
     {
@@ -90,9 +99,8 @@ export const qa = async (question: string, entries: any[]) => {
 
     const model = new ChatOpenAI(
       {
-        modelName: "google/gemini-3.1-flash-lite-preview",
-        temperature: 0.5,
-        maxTokens: 300,
+        modelName: "google/gemini-2.0-flash-exp:free",
+        temperature: 0,
         openAIApiKey: process.env.OPENAI_API_KEY,
       },
       {
@@ -136,5 +144,46 @@ export const qa = async (question: string, entries: any[]) => {
   } catch (error: any) {
     console.error("QA Error:", error)
     return `Error: ${error?.message || "I'm having trouble searching through your journal entries right now."}`
+  }
+}
+
+export const generateReport = async (analyses: any[]) => {
+  try {
+    const format_instructions = reportParser.getFormatInstructions()
+    
+    const model = new ChatOpenAI({
+      modelName: "google/gemini-2.0-flash-exp:free",
+      temperature: 0,
+      openAIApiKey: process.env.OPENAI_API_KEY,
+    }, {
+      basePath: `${OPENROUTER_BASE_URL}/api/v1`,
+    });
+
+    const prompt = new PromptTemplate({
+      template: "Analyze the following set of journal analysis data for a wellness report. Follow the format instructions exactly. \n{format_instructions}\nData: {data}",
+      inputVariables: ["data"],
+      partialVariables: { format_instructions }
+    });
+
+    const dataString = JSON.stringify(analyses.map(a => ({
+      mood: a.mood,
+      subject: a.subject,
+      sentimentScore: a.sentimentScore,
+      negative: a.negative,
+      createdAt: a.createdAt
+    })));
+
+    const input = await prompt.format({ data: dataString });
+    const result = await model.invoke(input);
+
+    const content = typeof result.content === 'string' ? result.content : JSON.stringify(result.content);
+    
+    // Clean potential markdown code blocks from the response
+    const cleanedContent = content.replace(/```json/g, "").replace(/```/g, "").trim();
+    
+    return reportParser.parse(cleanedContent);
+  } catch (e: any) {
+    console.error("Report generation error:", e);
+    throw new Error(`AI Report Error: ${e.message}`);
   }
 }
