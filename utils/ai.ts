@@ -56,7 +56,7 @@ export const analyze = async (content: string) => {
   const input = await getPrompt(content)
   const model = new ChatOpenAI(
     {
-      modelName: "google/gemini-2.0-flash-exp:free",
+      modelName: "google/gemini-3.1-flash-lite-preview",
       temperature: 0,
       maxTokens: 500,
       openAIApiKey: process.env.OPENAI_API_KEY,
@@ -99,7 +99,7 @@ export const qa = async (question: string, entries: any[]) => {
 
     const model = new ChatOpenAI(
       {
-        modelName: "google/gemini-2.0-flash-exp:free",
+        modelName: "google/gemini-3.1-flash-lite-preview",
         temperature: 0,
         openAIApiKey: process.env.OPENAI_API_KEY,
       },
@@ -152,7 +152,7 @@ export const generateReport = async (analyses: any[]) => {
     const format_instructions = reportParser.getFormatInstructions()
     
     const model = new ChatOpenAI({
-      modelName: "google/gemini-2.0-flash-exp:free",
+      modelName: "google/gemini-3.1-flash-lite-preview",
       temperature: 0,
       openAIApiKey: process.env.OPENAI_API_KEY,
     }, {

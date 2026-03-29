@@ -59,10 +59,18 @@ const WellnessReportPage = () => {
   }
 
   return (
-    <Box sx={{ p: { xs: 3, md: 6 }, bgcolor: 'neutral.lightBg', minHeight: '100%' }}>
-      <Box sx={{ maxWidth: '1000px', mx: 'auto' }}>
-        <Box sx={{ mb: 6 }}>
-          <Typography level="h1" fontWeight="xl" sx={{ mb: 1, color: 'primary.solidBg' }}>
+    <Box 
+      sx={{ 
+        p: { xs: 2, md: 4 }, 
+        bgcolor: 'neutral.lightBg', 
+        minHeight: 'calc(100vh - 64px)',
+        overflowX: 'hidden',
+        boxSizing: 'border-box'
+      }}
+    >
+      <Box sx={{ maxWidth: '1000px', mx: 'auto', pb: 4 }}>
+        <Box sx={{ mb: 4 }}>
+          <Typography level="h1" fontWeight="xl" sx={{ mb: 1, color: 'primary.solidBg', fontSize: { xs: '2rem', md: '2.5rem' } }}>
             Monthly Wellness Report
           </Typography>
           <Typography level="body-lg" sx={{ color: 'text.secondary' }}>
@@ -70,13 +78,13 @@ const WellnessReportPage = () => {
           </Typography>
         </Box>
 
-        <Grid container spacing={4}>
+        <Grid container spacing={3} sx={{ flexGrow: 1 }}>
           {/* Summary Section */}
           <Grid xs={12}>
             <Card 
               variant="outlined" 
               sx={{ 
-                p: 4, 
+                p: { xs: 2, md: 3 }, 
                 borderRadius: '2xl', 
                 bgcolor: 'background.surface',
                 border: '1px solid',
@@ -105,7 +113,7 @@ const WellnessReportPage = () => {
               variant="soft" 
               color="primary"
               sx={{ 
-                p: 4, 
+                p: { xs: 2, md: 3 }, 
                 height: '100%',
                 borderRadius: '2xl',
                 bgcolor: 'primary.lightBg',
@@ -125,8 +133,8 @@ const WellnessReportPage = () => {
 
           {/* Quick Stats */}
           <Grid xs={12} md={5}>
-            <Stack spacing={3}>
-              <Card variant="outlined" sx={{ borderRadius: 'xl', p: 3 }}>
+            <Stack spacing={2}>
+              <Card variant="outlined" sx={{ borderRadius: 'xl', p: 2 }}>
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
                   <Box>
                     <Typography level="body-xs" fontWeight="bold" sx={{ textTransform: 'uppercase', color: 'text.tertiary', mb: 0.5 }}>
@@ -140,7 +148,7 @@ const WellnessReportPage = () => {
                 </Stack>
               </Card>
 
-              <Card variant="outlined" sx={{ borderRadius: 'xl', p: 3 }}>
+              <Card variant="outlined" sx={{ borderRadius: 'xl', p: 2 }}>
                 <Box>
                   <Typography level="body-xs" fontWeight="bold" sx={{ textTransform: 'uppercase', color: 'text.tertiary', mb: 1 }}>
                     Common Mood
@@ -155,18 +163,18 @@ const WellnessReportPage = () => {
 
           {/* Top Subjects */}
           <Grid xs={12}>
-            <Card variant="outlined" sx={{ borderRadius: '2xl', p: 4, bgcolor: 'background.surface' }}>
+            <Card variant="outlined" sx={{ borderRadius: '2xl', p: { xs: 2, md: 3 }, bgcolor: 'background.surface' }}>
               <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 3 }}>
                 <BookmarkIcon color="primary" />
                 <Typography level="title-lg" fontWeight="bold">Recurring Themes</Typography>
               </Stack>
-              <Stack direction="row" spacing={2} flexWrap="wrap" useFlexGap>
+              <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
                 {report.topSubjects.map((subject: string) => (
                   <Chip 
                     key={subject} 
                     variant="soft" 
-                    size="lg" 
-                    sx={{ px: 2, py: 1, borderRadius: 'md', fontWeight: 'md' }}
+                    size="md" 
+                    sx={{ px: 2, py: 0.5, borderRadius: 'md', fontWeight: 'md' }}
                   >
                     {subject}
                   </Chip>

@@ -52,17 +52,3 @@ export const getWellnessReport = async () => {
   
   return await res.json()
 }
-
-export const transcribeAudio = async (audioBlob: Blob) => {
-  const formData = new FormData()
-  formData.append('file', audioBlob)
-
-  const res = await fetch(new Request(createURL('/api/whisper'), {
-    method: 'POST',
-    body: formData
-  }))
-
-  if (res.ok) {
-    return await res.json()
-  }
-}

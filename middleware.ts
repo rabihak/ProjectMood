@@ -7,14 +7,11 @@ export const config = {
     '/(api|trpc)(.*)'], // Run middleware on API routes
 };
 const isProtectedRoute = createRouteMatcher([
-  '/new-user(.*)/(.*)',
-  '/new-user',
-  '/journal',
-  '/journal/(.*)',
-  '/new-user/(.*)',
-  '/history',
-  '/journal(.*)/(.*)',
-  '/api(.*)/(.*)',
+  '/new-user(.*)',
+  '/journal(.*)',
+  '/history(.*)',
+  '/reports(.*)',
+  '/api/(.*)',
 ]);
 export default clerkMiddleware((auth, req) => {
   if (isProtectedRoute(req)) auth().protect();

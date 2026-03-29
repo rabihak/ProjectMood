@@ -1,19 +1,17 @@
 'use client'
 
-import { updateEntry, deleteEntry, transcribeAudio } from "@/utils/api"
+import { updateEntry, deleteEntry } from "@/utils/api"
 import React, { useState, useEffect, useRef } from "react"
 import { useAutosave } from "react-autosave"
 import Spinner from './Spinner';
 import { 
   Box, Typography, Card, Divider, List, ListItem, ListItemContent, Chip, Button,
   Modal, ModalDialog, DialogTitle, DialogContent, Stack, IconButton, Tooltip,
-  Snackbar, CircularProgress
+  Snackbar
 } from '@mui/joy';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
-import MicIcon from '@mui/icons-material/Mic';
-import SquareIcon from '@mui/icons-material/Square';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { useRouter } from "next/navigation"
 
@@ -35,14 +33,8 @@ const Editor = ({ entry }: any) => {
   const [value, setValue] = useState(entry?.content)
   const [isLoading, setIsloading] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
-  const [isRecording, setIsRecording] = useState(false)
-  const [isTranscribing, setIsTranscribing] = useState(false)
-  const [speechError, setSpeechError] = useState<string | null>(null)
   const [open, setOpen] = useState(false)
   const [analysis, setAnalysis] = useState<analysisint>(entry?.analysis)
-  
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null)
-  const chunksRef = useRef<Blob[]>([])
   const router = useRouter()
   
   const { mood, summary, color, subject, negative } = analysis ?? {}
@@ -52,66 +44,6 @@ const Editor = ({ entry }: any) => {
     { name: "Mood", value: mood },
     { name: "Negative", value: negative ? 'Yes' : 'No', color: negative ? 'danger' : 'success' },
   ]
-
-  const startRecording = async () => {
-    setSpeechError(null)
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-      const recorder = new MediaRecorder(stream)
-      mediaRecorderRef.current = recorder
-      chunksRef.current = []
-
-      recorder.ondataavailable = (e) => {
-        if (e.data.size > 0) {
-          chunksRef.current.push(e.data)
-        }
-      }
-
-      recorder.onstop = async () => {
-        const audioBlob = new Blob(chunksRef.current, { type: 'audio/webm' })
-        setIsTranscribing(true)
-        try {
-          const result = await transcribeAudio(audioBlob)
-          if (result?.text) {
-            setValue((prev: string) => prev + (prev.endsWith(' ') || prev === '' ? '' : ' ') + result.text)
-          } else if (result?.error) {
-            setSpeechError(result.error)
-          }
-        } catch (error) {
-          setSpeechError("Transcription failed. Please check your connection.")
-        } finally {
-          setIsTranscribing(false)
-          // Stop all tracks to release the microphone
-          stream.getTracks().forEach(track => track.stop())
-        }
-      }
-
-      recorder.start()
-      setIsRecording(true)
-    } catch (error: any) {
-      console.error("Mic access error:", error)
-      if (error.name === 'NotAllowedError') {
-        setSpeechError("Microphone access denied.")
-      } else {
-        setSpeechError("Could not access microphone.")
-      }
-    }
-  }
-
-  const stopRecording = () => {
-    if (mediaRecorderRef.current && isRecording) {
-      mediaRecorderRef.current.stop()
-      setIsRecording(false)
-    }
-  }
-
-  const toggleRecording = () => {
-    if (isRecording) {
-      stopRecording()
-    } else {
-      startRecording()
-    }
-  }
 
   useAutosave({
     data: value,
@@ -170,28 +102,6 @@ const Editor = ({ entry }: any) => {
           borderColor: 'divider',
           boxShadow: 'sm'
         }}>
-          <Tooltip title={isRecording ? "Stop Recording" : "Start Voice-to-Text"} variant="soft">
-            <IconButton 
-              variant={isRecording ? "solid" : "soft"} 
-              color={isRecording ? "danger" : "primary"}
-              onClick={toggleRecording}
-              disabled={isTranscribing}
-              sx={{ 
-                borderRadius: 'full',
-                animation: isRecording ? 'pulse 1.5s infinite' : 'none',
-                '@keyframes pulse': {
-                  '0%': { transform: 'scale(1)', boxShadow: '0 0 0 0 rgba(225, 29, 72, 0.4)' },
-                  '70%': { transform: 'scale(1.1)', boxShadow: '0 0 0 10px rgba(225, 29, 72, 0)' },
-                  '100%': { transform: 'scale(1)', boxShadow: '0 0 0 0 rgba(225, 29, 72, 0)' },
-                }
-              }}
-            >
-              {isTranscribing ? <CircularProgress size="sm" thickness={2} /> : (isRecording ? <SquareIcon sx={{ fontSize: '1.2rem' }} /> : <MicIcon />)}
-            </IconButton>
-          </Tooltip>
-
-          <Divider orientation="vertical" />
-
           {isLoading ? (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, px: 1 }}>
               <Spinner />
@@ -207,7 +117,7 @@ const Editor = ({ entry }: any) => {
         
         <textarea 
           className="w-full h-full text-lg sm:text-xl outline-none resize-none bg-transparent dark:text-white transition-colors duration-300"
-          placeholder={isRecording ? "Listening... click again to finish." : (isTranscribing ? "AI is transcribing your audio..." : "Start writing your thoughts...")}
+          placeholder="Start writing your thoughts..."
           value={value} 
           onChange={e => setValue(e.target.value)} 
           style={{ fontFamily: 'inherit', lineHeight: 1.6, paddingTop: '40px' }}
@@ -297,27 +207,6 @@ const Editor = ({ entry }: any) => {
           </Stack>
         </ModalDialog>
       </Modal>
-
-      <Snackbar
-        variant="soft"
-        color="danger"
-        open={!!speechError}
-        onClose={() => setSpeechError(null)}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        startDecorator={<InfoOutlinedIcon />}
-        endDecorator={
-          <Button
-            onClick={() => setSpeechError(null)}
-            size="sm"
-            variant="soft"
-            color="danger"
-          >
-            Dismiss
-          </Button>
-        }
-      >
-        {speechError}
-      </Snackbar>
     </Box>
   )
 }
